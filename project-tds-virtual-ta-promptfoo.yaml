@@ -1,0 +1,69 @@
+description: "TDS Virtual TA Evaluation"
+
+providers:
+  - id: tds-virtual-ta
+    config:
+      url: https://your-api-url.vercel.app/api/
+      method: POST
+      headers:
+        Content-Type: application/json
+      body:
+        question: "{{vars.question}}"
+        image: "{{vars.image}}"
+      responseParser: json.answer
+
+tests:
+  - description: "Basic TDS course question"
+    vars:
+      question: "What is the difference between git add and git commit?"
+    assert:
+      - type: contains
+        value: "git add"
+      - type: contains  
+        value: "git commit"
+      - type: length
+        min: 50
+
+  - description: "FastAPI deployment question"
+    vars:
+      question: "How do I deploy a FastAPI application to Vercel?"
+    assert:
+      - type: contains
+        value: "FastAPI"
+      - type: contains
+        value: "Vercel"
+      - type: length
+        min: 100
+
+  - description: "LLM related question"
+    vars:
+      question: "Should I use gpt-4o-mini or gpt-3.5-turbo for this assignment?"
+    assert:
+      - type: contains
+        value: "gpt-3.5-turbo"
+      - type: length
+        min: 50
+
+  - description: "Data science tools question"
+    vars:
+      question: "What are the key differences between Pandas and NumPy?"
+    assert:
+      - type: contains
+        value: "Pandas"
+      - type: contains
+        value: "NumPy"
+      - type: length
+        min: 80
+
+  - description: "Docker question"
+    vars:
+      question: "How do I create a Dockerfile for a Python application?"
+    assert:
+      - type: contains
+        value: "Dockerfile"
+      - type: contains
+        value: "Python"
+      - type: length
+        min: 60
+
+outputPath: './evaluation-results.json'
